@@ -48,6 +48,9 @@ def create_custom_linkcard(
     <meta property="og:title" content="{_escape_html(title)}">
     <meta property="og:description" content="{_escape_html(description)}">
     <meta property="og:image" content="{image_url}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -55,6 +58,7 @@ def create_custom_linkcard(
     <meta name="twitter:title" content="{_escape_html(title)}">
     <meta name="twitter:description" content="{_escape_html(description)}">
     <meta name="twitter:image" content="{image_url}">
+    <meta name="twitter:image:alt" content="{_escape_html(title)}">
     
     <title>{_escape_html(title)}</title>
     
