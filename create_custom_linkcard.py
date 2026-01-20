@@ -145,7 +145,7 @@ if __name__ == "__main__":
     
     # 設定
     create_custom_linkcard(
-        image_filename="card_image_v3.png",
+        image_filename="card_image_v4.png",
         redirect_url=redirect_url,
         title="配信先♡",
         description="",
