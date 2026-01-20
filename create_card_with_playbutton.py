@@ -43,4 +43,5 @@ def create_linkcard_image(input_file, output_file, target_width=1200, target_hei
     print(f"✅ 再生ボタン付きカードを生成: {output_file}")
 
 if __name__ == "__main__":
-    create_linkcard_image('card_image.jpg', 'card_image_v2.png', offset_y=50)
+    # live_picture.pngを使用して上部基準でリンクカードを生成
+    create_linkcard_image('live_picture.png', 'card_image_v2.png', offset_y=0)
