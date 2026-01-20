@@ -30,14 +30,12 @@ def create_linkcard_image(input_file, output_file, target_width=1200, target_hei
         cropped = Image.new('RGB', (target_width, target_height), (255, 255, 255))
         cropped.paste(resized, (0, 0))
     
-    # RGBAモードに変換（透過処理のため）
+    # RGBAモードに変換
     img_rgba = cropped.convert('RGBA')
     
-    # 暗いオーバーレイを追加（25%の黒）
-    overlay = Image.new('RGBA', (target_width, target_height), (0, 0, 0, 64))  # alpha=64は約25%
-    img_with_overlay = Image.alpha_composite(img_rgba, overlay)
-    
-    print("✅ オーバーレイを適用（再生ボタンなし）")
+    # オーバーレイなし、画像そのままを使用
+    img_with_overlay = img_rgba
+    print("✅ オーバーレイなし（元画像そのまま）")
     
     # RGBに変換して保存
     final_img = img_with_overlay.convert('RGB')
