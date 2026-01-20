@@ -33,9 +33,38 @@ def create_linkcard_image(input_file, output_file, target_width=1200, target_hei
     # RGBAモードに変換
     img_rgba = cropped.convert('RGBA')
     
-    # オーバーレイなし、画像そのままを使用
+    # 再生ボタンアイコンを追加
+    try:
+        icon = Image.open('button.png')
+        
+        # RGBAに変換
+        if icon.mode != 'RGBA':
+            icon = icon.convert('RGBA')
+        
+        # 透明度を調整（50%透明にする）
+        alpha = icon.split()[3]  # アルファチャンネルを取得
+        alpha = alpha.point(lambda x: int(x * 0.5))  # 透明度を50%に
+        icon.putalpha(alpha)
+        
+        # アイコンのサイズを調整（400px程度）
+        icon_size = 400
+        icon.thumbnail((icon_size, icon_size), Image.Resampling.LANCZOS)
+        
+        # 中央に配置
+        center_x = target_width // 2
+        center_y = target_height // 2
+        icon_x = center_x - icon.width // 2
+        icon_y = center_y - icon.height // 2
+        
+        # アイコンを合成
+        img_rgba.paste(icon, (icon_x, icon_y), icon)
+        print(f"✅ 再生ボタンアイコン追加（透明度50%）: {icon.width}x{icon.height}")
+        
+    except Exception as e:
+        print(f"⚠️ アイコンの読み込みに失敗: {e}")
+    
+    # 最終画像を設定
     img_with_overlay = img_rgba
-    print("✅ オーバーレイなし（元画像そのまま）")
     
     # RGBに変換して保存
     final_img = img_with_overlay.convert('RGB')
