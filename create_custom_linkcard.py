@@ -44,6 +44,7 @@ def create_custom_linkcard(
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="配信先：vv_ga07">
     <meta property="og:title" content="{_escape_html(title)}">
     <meta property="og:description" content="{_escape_html(description)}">
     <meta property="og:image" content="{image_url}">
