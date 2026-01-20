@@ -146,7 +146,7 @@ if __name__ == "__main__":
     create_custom_linkcard(
         image_filename="card_image_v4.png",
         redirect_url=redirect_url,
-        title="配信先♡",
+        title="🔴6分前に配信を始めました：584人が視聴中",
         description="",
         display_url="https://sato-117.github.io/linkcard",
         output_html="linkcard.html",
