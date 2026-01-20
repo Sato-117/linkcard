@@ -33,8 +33,8 @@ def create_linkcard_image(input_file, output_file, target_width=1200, target_hei
     # RGBAモードに変換（透過処理のため）
     img_rgba = cropped.convert('RGBA')
     
-    # 暗いオーバーレイを追加（30%の黒）
-    overlay = Image.new('RGBA', (target_width, target_height), (0, 0, 0, 77))  # alpha=77は約30%
+    # 暗いオーバーレイを追加（40%の黒）
+    overlay = Image.new('RGBA', (target_width, target_height), (0, 0, 0, 102))  # alpha=102は約40%
     img_with_overlay = Image.alpha_composite(img_rgba, overlay)
     
     # 描画用オブジェクトを作成
@@ -44,26 +44,34 @@ def create_linkcard_image(input_file, output_file, target_width=1200, target_hei
     center_x = target_width // 2
     center_y = target_height // 2
     
-    # 外側の円（白、半透明）
-    circle_radius = 60
+    # 外側の円の影（黒、半透明）
+    circle_radius = 80
+    shadow_offset = 8
+    draw.ellipse(
+        [center_x - circle_radius + shadow_offset, center_y - circle_radius + shadow_offset,
+         center_x + circle_radius + shadow_offset, center_y + circle_radius + shadow_offset],
+        fill=(0, 0, 0, 100)  # 黒い影
+    )
+    
+    # 外側の円（白、不透明）
     draw.ellipse(
         [center_x - circle_radius, center_y - circle_radius,
          center_x + circle_radius, center_y + circle_radius],
-        fill=(255, 255, 255, 200),  # 白、80%不透明
-        outline=(255, 255, 255, 230),
-        width=3
+        fill=(255, 255, 255, 255),  # 完全に白、不透明
+        outline=(240, 240, 240, 255),
+        width=4
     )
     
-    # 再生ボタンの三角形（右向き）
-    triangle_size = 30
+    # 再生ボタンの三角形（右向き、黒）
+    triangle_size = 35
     # 三角形を少し右にオフセット（視覚的に中央に見えるように）
-    offset_x = 5
+    offset_x = 8
     triangle = [
         (center_x - triangle_size//2 + offset_x, center_y - triangle_size),  # 上
         (center_x - triangle_size//2 + offset_x, center_y + triangle_size),  # 下
         (center_x + triangle_size + offset_x, center_y)  # 右
     ]
-    draw.polygon(triangle, fill=(50, 50, 50, 255))  # ダークグレー
+    draw.polygon(triangle, fill=(30, 30, 30, 255))  # ほぼ黒
     
     # RGBに変換して保存
     final_img = img_with_overlay.convert('RGB')
