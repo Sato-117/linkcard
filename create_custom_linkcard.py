@@ -149,7 +149,7 @@ if __name__ == "__main__":
         redirect_url=redirect_url,
         title="🔴6分前に配信を始めました：584人が視聴中",
         description="",
-        display_url="https://sato-117.github.io/linkcard",
+        display_url="https://vv-ga07.github.io/linkcard",
         output_html="linkcard.html",
-        base_url="https://sato-117.github.io/linkcard"
+        base_url="https://vv-ga07.github.io/linkcard"
     )

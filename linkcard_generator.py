@@ -294,8 +294,22 @@ class CardGenerator:
 class HTMLGenerator:
     """OGP対応HTMLファイルを生成するクラス"""
     
+    def __init__(self, base_url: str = ""):
+        """初期化
+        
+        Args:
+            base_url: GitHub PagesのベースURL（例: https://username.github.io/linkcard）
+        """
+        self.base_url = base_url.rstrip('/')
+    
     def generate(self, metadata: dict, image_filename: str, output_path: str = "linkcard.html"):
         """OGPタグ付きHTMLファイルを生成"""
+        # 画像URLを絶対URLに変換
+        if self.base_url:
+            image_url = f"{self.base_url}/{image_filename}"
+        else:
+            image_url = image_filename
+        
         html_content = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -307,14 +321,14 @@ class HTMLGenerator:
     <meta property="og:url" content="{metadata['url']}">
     <meta property="og:title" content="{self._escape_html(metadata['title'])}">
     <meta property="og:description" content="{self._escape_html(metadata['description'])}">
-    <meta property="og:image" content="{image_filename}">
+    <meta property="og:image" content="{image_url}">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{metadata['url']}">
     <meta name="twitter:title" content="{self._escape_html(metadata['title'])}">
     <meta name="twitter:description" content="{self._escape_html(metadata['description'])}">
-    <meta name="twitter:image" content="{image_filename}">
+    <meta name="twitter:image" content="{image_url}">
     
     <title>{self._escape_html(metadata['title'])}</title>
     
@@ -385,10 +399,15 @@ class HTMLGenerator:
 class LinkCardGenerator:
     """リンクカード生成のメインクラス"""
     
-    def __init__(self):
+    def __init__(self, base_url: str = ""):
+        """初期化
+        
+        Args:
+            base_url: GitHub PagesのベースURL（例: https://username.github.io/linkcard）
+        """
         self.fetcher = MetadataFetcher()
         self.generator = CardGenerator()
-        self.html_generator = HTMLGenerator()
+        self.html_generator = HTMLGenerator(base_url)
     
     async def generate(self, url: str, output_path: str = "linkcard.png", generate_html: bool = False):
         """リンクカードを生成"""
@@ -417,15 +436,17 @@ class LinkCardGenerator:
 
 async def main():
     if len(sys.argv) < 2:
-        print("使用方法: python linkcard_generator.py <URL> [-o 出力ファイル名] [--generate-html]")
+        print("使用方法: python linkcard_generator.py <URL> [-o 出力ファイル名] [--generate-html] [--base-url ベースURL]")
         print("例: python linkcard_generator.py https://example.com")
         print("例: python linkcard_generator.py https://example.com -o card.png")
         print("例: python linkcard_generator.py https://example.com --generate-html")
+        print("例: python linkcard_generator.py https://example.com --generate-html --base-url https://username.github.io/linkcard")
         sys.exit(1)
     
     url = sys.argv[1]
     output_path = "linkcard.png"
     generate_html = False
+    base_url = ""
     
     # オプション解析
     i = 2
@@ -436,10 +457,13 @@ async def main():
         elif sys.argv[i] == "--generate-html":
             generate_html = True
             i += 1
+        elif sys.argv[i] == "--base-url" and i + 1 < len(sys.argv):
+            base_url = sys.argv[i + 1]
+            i += 2
         else:
             i += 1
     
-    generator = LinkCardGenerator()
+    generator = LinkCardGenerator(base_url)
     await generator.generate(url, output_path, generate_html)
 
 
