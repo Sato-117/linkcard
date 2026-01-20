@@ -1,7 +1,7 @@
 """画像を上部基準でリンクカードサイズにリサイズ"""
 from PIL import Image
 
-def resize_top_aligned(input_file, output_file, target_width=1200, target_height=630):
+def resize_top_aligned(input_file, output_file, target_width=1200, target_height=630, offset_y=0):
     """
     画像を上部基準でリサイズ（アスペクト比保持）
     
@@ -10,6 +10,7 @@ def resize_top_aligned(input_file, output_file, target_width=1200, target_height
         output_file: 出力画像ファイル
         target_width: 目標幅
         target_height: 目標高さ
+        offset_y: 切り取り開始位置のオフセット（ピクセル）正の数で下にずれる
     """
     # 元画像を読み込み
     img = Image.open(input_file)
@@ -23,10 +24,10 @@ def resize_top_aligned(input_file, output_file, target_width=1200, target_height
     resized = img.resize((target_width, new_height), Image.Resampling.LANCZOS)
     print(f"リサイズ後: {target_width}x{new_height}")
     
-    # 高さが630px以上なら上部から切り取り
-    if new_height >= target_height:
-        final = resized.crop((0, 0, target_width, target_height))
-        print(f"上部から切り取り: {target_width}x{target_height}")
+    # 高さが630px以上なら指定位置から切り取り
+    if new_height >= target_height + offset_y:
+        final = resized.crop((0, offset_y, target_width, target_height + offset_y))
+        print(f"切り取り: Y={offset_y}から{target_height + offset_y} ({target_width}x{target_height})")
     else:
         # 高さが足りない場合は白背景で埋める（通常は起こらない）
         final = Image.new('RGB', (target_width, target_height), (255, 255, 255))
@@ -38,4 +39,5 @@ def resize_top_aligned(input_file, output_file, target_width=1200, target_height
     print(f"✅ 保存完了: {output_file}")
 
 if __name__ == "__main__":
-    resize_top_aligned('card_image.jpg', 'card_image.png')
+    # 50ピクセル下にずらす（顔がより中央に来るように調整）
+    resize_top_aligned('card_image.jpg', 'card_image_v2.png', offset_y=50)
