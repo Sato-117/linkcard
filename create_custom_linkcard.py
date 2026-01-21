@@ -145,7 +145,7 @@ if __name__ == "__main__":
     
     # 設定
     create_custom_linkcard(
-        image_filename="livecard.png",
+        image_filename="streamcard.png",
         redirect_url=redirect_url,
         title="🔴6分前に配信を始めました：584人が視聴中",
         description="",
