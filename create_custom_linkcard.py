@@ -138,7 +138,7 @@ if __name__ == "__main__":
         print("  python create_custom_linkcard.py <リダイレクト先URL>")
         print("")
         print("例:")
-        print('  python create_custom_linkcard.py https://ad-nex.com/u/ai9fstn0aesb')
+        print('  python create_custom_linkcard.py https://ad-nex.com/u/ai9kjsno7wzd')
         sys.exit(1)
     
     redirect_url = sys.argv[1]
